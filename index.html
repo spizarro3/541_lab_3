@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styleLab3.css">
+    <title>Tip Calculator</title>
+</head>
+<body>
+   
+    <form>
+        <h4>ITMD 541 - Lab 3 - Samuel Pizarro Martinez</h4>
+        <h1>Tip Calculator</h1>
+        <fieldset>
+             <label class="field-label">Bill Total: $</label> 
+             <input class="field-value"
+             id="billTotal"
+              type=""number"
+              onchange="Main()">
+        </fieldset>
+
+        <fieldset id="field-currency">
+            <label id="select-currency" 
+            class="field-label"> Select Currency: </label>
+      
+            <select class="field-value"
+            id="currency-select" onchange="Main()">
+                <option id="selectDefault" type="null"
+                >Choose Currency:</option>
+                <option id="option1">USD</option>  
+                <option id="option2">Yen</option>
+                <option id="option3">Rupee</opton>
+            </select>
+        </fieldset>
+       
+    
+            <input id="tipRange"
+            type="range" 
+            onchange="Main()"
+            min="0" 
+            max="100"
+            step="5"
+            value="0">
+        <fieldset>
+            <label class="field-label" >Tip Percentage</label>
+            <input class="field-value" id="tipP"disabled>
+        </fieldset>    
+        <fieldset>
+            <label class="field-label" >Tip Amount</label>
+            <input class="field-value" id="tipA" disabled>
+        </fieldset>
+          
+        <fieldset>
+            <label class="field-label">Total Bill With Tips: </label>
+            <input class="field-value" id="tTips" disabled>
+        </fieldset>
+        <p id="photo"> &#128517; </p>
+    </form>
+    
+    <!--  -->
+ <script src="index.js"></script>   
+</body>
+</html>

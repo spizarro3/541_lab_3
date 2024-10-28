@@ -1,0 +1,117 @@
+body{
+    background-color: pink;
+    
+}
+
+form{
+
+    position: relative;
+    background-color: antiquewhite;
+
+    display:flex;
+    flex-direction:  column;
+
+    width: 200px;
+    font-size: .5rem;
+   
+    margin-left: auto; margin-right: auto;
+
+    border-style: dashed;
+    border-color: white;
+    border-width: medium;
+    border-radius: 8px;
+    
+}
+h4{
+    margin-left: auto; margin-right: auto;
+}
+h1{
+    margin-left: auto; margin-right: auto;
+}
+input{
+    width:  57%;
+    border: solid;
+    border-color:  #C3B091;
+}
+#billTotal{
+    background-color: #FFFFF0;
+}
+#currency-select{
+   font-size: .5rem; 
+    width: 112px;
+    
+}
+#tipRange{
+    width: 90%;
+    margin: auto;
+}
+fieldset{
+    display: flex;
+    flex-direction:  row;
+    justify-content: space-between;
+
+    border: none;
+}
+.field-label{
+   text-align: left;
+}
+.field-value{
+    text-align: right;
+}
+
+#photo{
+    visibility: hidden;
+    /* visibility: visible; */
+    position: absolute;
+    top: 28px;
+    right: 20px;
+    font-size: 90px;
+}
+
+@media (max-width: 480px){
+    body{
+        background-color: #d3e6d3;
+        height: 1vh;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    fieldset{
+        flex-direction: column;
+        align-items: center;
+        
+    }
+    input{
+        width: 100%;
+    }
+    
+    #photo{
+        visibility: hidden;
+        /* visibility: visible; */
+        position: absolute;
+        top: 50px;
+        right: 50px;
+        font-size: 100px;
+    }
+    #field-currency{  
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    #select-currency{
+        flex-direction: column ;
+        width: 25%;
+        margin-left:18px;
+    }
+    #currency-select{
+        margin-right: 20px;      
+    }
+   
+    #tipRange{
+        width: 75%;
+    }
+}
