@@ -11,12 +11,13 @@
     <form>
         <h4>ITMD 541 - Lab 3 - Samuel Pizarro Martinez</h4>
         <h1>Tip Calculator</h1>
+
         <fieldset>
              <label class="field-label">Bill Total: $</label> 
              <input class="field-value"
              id="billTotal"
-              type=""number"
-              onchange="Main()">
+              type="number"
+              oninput = "Main()">
         </fieldset>
 
         <fieldset id="field-currency">
@@ -36,7 +37,7 @@
     
             <input id="tipRange"
             type="range" 
-            onchange="Main()"
+            oninput="Main()"
             min="0" 
             max="100"
             step="5"
@@ -54,9 +55,9 @@
             <label class="field-label">Total Bill With Tips: </label>
             <input class="field-value" id="tTips" disabled>
         </fieldset>
+        <p id="msgBox"></p>
         <p id="photo"> &#128517; </p>
     </form>
-    
     <!--  -->
  <script src="index.js"></script>   
 </body>

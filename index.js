@@ -4,85 +4,148 @@ const currencySelect = document.getElementById("currency-select");
 const questionChecker = document.getElementById("?");
 
 const tipRange = document.getElementById("tipRange")
-
 const tipP = document.getElementById("tipP");
 const tipA = document.getElementById("tipA");
 const tTips = document.getElementById("tTips");
 
 const photo = document.getElementById("photo")
-// add if bill total.value is negative or Nan
-// might need to make a function for 
-function Main(p){
+const msgBox = document.getElementById("msgBox")
 
-   // p == undefined ? console.log("0% Tip? WOW"):null;
+// stores every calculated instance
+const state = [];
+
+
+/**
+ * Render Main() when BillTotal input value and Tip Range Slider changes
+ * @return {currencyChecker(tipRange.value)} Returns function with valid Tip Amount
+ */
+
+function Main(){
+    // Tip amount will display when TipRange slider changes "onClick"
     displayTip();
-    billTotal.value < 0 ? showPhoto():null;
-    isNaN(billTotal.value ) ? showPhoto(): null;
-    if(billTotal.value > 0 && tipRange.value > 0){
+
+    // If billTotal input is Negative or Non-Number return error msg and img
+    billTotal.value < 0 || isNaN(billTotal.value)
+        ? showPhoto()
+        : null;
+
+    // If valid BillTotal and Tip > 0
+    if(billTotal.value >= 0 && tipRange.value >= 0){
         hidePhoto()
-        currencyChecker(tipRange.value)}
-    if(billTotal.value > 0 && tipRange.value == 0){
-        hidePhoto()
-        currencyChecker(0)}
+        return currencyChecker(tipRange.value)
+    }
 }
 
- function GrandTotal(tip, currency){
-    const currentBillTotal = billTotal.value;
-    const totalConverted = currentBillTotal * currency
-    const tipConverted = totalConverted*tip
-    const total = totalConverted + (tipConverted/100);
 
-    if(tip == 0){
-        // should I have a state so we can re-use the code?
-        const state = {billUSD:currentBillTotal, tip: tip, currency:currency}
-        console.log(state)
-        DisplayMoney(0, total)
-    }else{
-      
-        DisplayMoney(tipConverted/100, total)
-    }
- }
 /**
  * 
- * @param {*} currency 
- * @returns 
- * How to convert currency
- * A - Current Value: currentBillTotal
- * B - Exchange Rate: currency
- * C - Total with excgange rate applied
- * A*B=C(*=multiplied)
+ * @param {Number} tip amount
+ * @return {GrandTotal(tip, currency, currencyType)}
+ * 
  */
+
 function currencyChecker(tip){
+    // this method should never go off and is there just in case
     isNaN(tip)?tip = 0:null;
+
+    // if a currency has been selected return data
     menu = currencySelect.value
-    menu == "Please choose Currency:" ? DisplayMoney(null,null): null;
-    menu == "USD" ? GrandTotal(tip, 1) : null;
-    menu == "Yen" ? GrandTotal(tip, 149.34) : null;
-    menu == "Rupee" ? GrandTotal(tip, 84.08) : null;
+    menu == "Choose Currency:" ? DisplayMoney(null,null): null;
+    menu == "USD" ? GrandTotal(tip, 1, "$") : null;
+    menu == "Yen" ? GrandTotal(tip, 149.34, "¥") : null;
+    menu == "Rupee" ? GrandTotal(tip, 84.07, "\u20B9") : null;
 }
+
+/**
+ * @returns {void} updates tip percentage
+ */
 function displayTip(){
     tipP.value = `${tipRange.value}%`;
 }
-// this function will target my DOM and show the values
-function DisplayMoney(P, tT){
-    console.log(P)
-    if(P == null || tT.length === 0){
-        console.log("Choose a currency")
-        tipA.value = 200;
+
+
+/**
+ * 
+ * @param {Number} tip 
+ * @param {Number} currency 
+ * @param {String} currencyType 
+ * @return {DisplayMoney()} function to display values on form
+ */
+
+function GrandTotal(tip, currency, currencyType){
+    const instance = {
+        billUSD: billTotal.value, 
+        tipPercentage: tip/100,
+        tipAmount: (billTotal.value * currency)*(tip/100),
+        currencyType: currencyType,
+        currencyRate: currency,
+        totalBillWithTips: ((billTotal.value * currency)*(tip/100)) + (billTotal.value * currency)
     }
-  //  tipA.value = P;
-    tTips.value = (Math.round(tT * 100)/100).toFixed(2);
-    tipA.value = (Math.round(P * 100)/100).toFixed(2);
+    state.push(instance)
+    currencyPopUp(currencyType)
+    return  DisplayMoney(instance.currencyType, instance.tipAmount, instance.totalBillWithTips)
+ }
+
+
+/**
+ * 
+ * @param {Number} instance.currencyType
+ * @param {Number} instance.tipAmount
+ * @param {Number} instance.totalBillWithTips
+ */
+function DisplayMoney(currencyType, tipAmount, totalBillWithTips){
+    if(tipAmount == null || totalBillWithTips.length === 0){
+        msgBox.style.display = "block";
+        msgBox.innerText = "Choose a currency";
+
+        tipP.value = "0%"
+        tipA.value = "0.00"
+        tTips.value = "0.00"
+    } else {
+            tipA.value = `${currencyType} ${tipAmount.toFixed(2)}`
+            tTips.value = `${currencyType} ${totalBillWithTips.toFixed(2)}`
+    }
 }
 
-// Do I still need to fix this??
 
+/**
+ * @method changes visiable Html elements to show currency character 
+ */
+
+function currencyPopUp (currencyType){
+    if (currencyType == "$"){
+        msgBox.style.display = "none";
+    }
+    if (currencyType == "¥"){
+        msgBox.style.display = "block";
+        msgBox.innerText = "$1 USD = ¥ 149.34 JPY for Yen";
+    }
+    if (currencyType == "\u20B9"){
+        msgBox.style.display = "block";
+        msgBox.innerText = "$1 USD = ₹ 84.07 INR for Rupee";
+    }
+ }    
+
+
+
+/**
+ * @method changes visiable Html elements to show as an error message
+ */
 function showPhoto(){
     photo.style.visibility = "visible";
-    window.alert("BillTotal can not be a Negative number or Non-Number")
+    msgBox.style.display = "block";
+    msgBox.innerText ="BillTotal can not be a negative number"
+    
+    tipP.value = "!"
+    tTips.value = "!";
+    tipA.value = "!";
 }
 
+
+/**
+ * @method changes visiable Html elements to hidden
+ */
 function hidePhoto(){
-    console.log("should hide")
     photo.style.visibility = "hidden";
+    msgBox.style.display = "none";
 }
